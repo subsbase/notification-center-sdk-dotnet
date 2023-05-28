@@ -6,6 +6,7 @@ public class NotificationCenterSdkBuilder
 {
     private string _uri;
     private string _apiSecret;
+    private string _realm;
 
     public NotificationCenterSdkBuilder WithUri(string uri)
     {
@@ -15,7 +16,13 @@ public class NotificationCenterSdkBuilder
 
     public NotificationCenterSdkBuilder WithApiSecret(string apiSecret)
     {
-        _apiSecret = _apiSecret;
+        _apiSecret = apiSecret;
+        return this;
+    }
+
+    public NotificationCenterSdkBuilder WithRealm(string realm)
+    {
+        _realm = realm;
         return this;
     }
 
@@ -33,7 +40,7 @@ public class NotificationCenterSdkBuilder
 
     private NotificationCenterCredentials GetCredentials()
     {
-        return new NotificationCenterCredentials(_apiSecret);
+        return new NotificationCenterCredentials(_apiSecret, _realm);
     }
 
     private HttpClient GetHttpClient()

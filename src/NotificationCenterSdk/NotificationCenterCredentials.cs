@@ -4,11 +4,13 @@ namespace NotificationCenterSdk;
 
 public class NotificationCenterCredentials
 {
-    public NotificationCenterCredentials(string apiSecret)
+    public NotificationCenterCredentials(string apiSecret, string realm)
     {
-        apiSecret = apiSecret;
+        ApiSecret = apiSecret;
+        Realm = realm;
     }
     
-    [JsonPropertyName("apiSecret")]
     public string ApiSecret { get; }
+    
+    public string Realm { get; }
 }
