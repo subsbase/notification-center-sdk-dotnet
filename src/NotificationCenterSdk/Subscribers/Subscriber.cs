@@ -4,21 +4,21 @@ namespace NotificationCenterSdk.Subscribers;
 
 public class Subscriber
 {
-    [JsonPropertyName("_id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    
-    [JsonPropertyName("subscriberId")]
-    public  string SubscriberId { get; set; }
 
     [JsonPropertyName("realm")]
-    public string realmId { get; set; }
+    public string Realm { get; set; }
     
     [JsonPropertyName("customData")]
-    public object CustomData { get; set; }
+    public Dictionary<string,string> CustomData { get; set; }
     
     [JsonPropertyName("notifications")]
     public IEnumerable<Notification> Notifications { get; set; }
     
+    [JsonPropertyName("archivedNotifications")]
+    public IEnumerable<ArchivedNotification>  ArchivedNotifications { get; set; }
+
     [JsonPropertyName("createdAt")]
     public DateTime CreatedAt { get; set; }
     
