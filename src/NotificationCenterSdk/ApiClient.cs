@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace NotificationCenterSdk;
 
@@ -21,85 +22,86 @@ public class ApiClient : IApiClient
         _httpClient = httpClient;
         _credentials = credentials;
         _logger = logger;
+        SetRealmHeader();
     }
 
-    public async Task<TResponse> GetAsync<TResponse>(string path, IDictionary<string, string>? headers = null)
+    public Task<TResponse> GetAsync<TResponse>(string path, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        HttpResponseMessage response = await SendRequestAsync(
+        return ProcessRequestAsync<TResponse>(
             HttpMethod.Get,
             path,
             null,
+            requireAuth,
             headers);
-
-        return await response.Content.ReadFromJsonAsync<TResponse>();
     }
 
-    public async Task<TResponse> PostAsync<TResponse>(string path, object body, TResponse response, IDictionary<string, string>? headers = null)
+    public Task<TResponse> PostAsync<TResponse>(string path, object body, TResponse response, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        HttpResponseMessage httpResponse = await SendRequestAsync(
+        return ProcessRequestAsync<TResponse>(
             HttpMethod.Post,
             path,
             body,
+            requireAuth,
             headers);
-
-        ValidateResponse(httpResponse);
-
-        return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
     }
 
-    public async Task<TResponse> PostAsync<TResponse>(string path, object body, IDictionary<string, string>? headers = null)
+    public Task<TResponse> PostAsync<TResponse>(string path, object body, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        HttpResponseMessage response = await SendRequestAsync(
+        return ProcessRequestAsync<TResponse>(
             HttpMethod.Post,
             path,
             body,
+            requireAuth,
             headers);
-
-        ValidateResponse(response);
-
-        return await response.Content.ReadFromJsonAsync<TResponse>();
     }
 
-    public async Task<TResponse> PutAsync<TResponse>(string path, object body, IDictionary<string, string>? headers = null)
+    public Task<TResponse> PutAsync<TResponse>(string path, object body, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        HttpResponseMessage response = await SendRequestAsync(
-            HttpMethod.Put,
-            path,
-            body,
-            headers);
-
-        ValidateResponse(response);
-
-        return await response.Content.ReadFromJsonAsync<TResponse>();
+        return ProcessRequestAsync<TResponse>(HttpMethod.Put, path, body, requireAuth, headers);
     }
 
 
-    public async Task<TResponse> PatchAsync<TResponse>(string path, object body, IDictionary<string, string>? headers = null)
+    public Task<TResponse> PatchAsync<TResponse>(string path, object body, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        HttpResponseMessage response = await SendRequestAsync(
-            HttpMethod.Patch,
+        return ProcessRequestAsync<TResponse>(HttpMethod.Patch, path, body, requireAuth, headers);
+    }
+
+    private async Task<TResponse> ProcessRequestAsync<TResponse>(HttpMethod httpMethod, string path, object body, bool requireAuth, Dictionary<string, string>? headers)
+    {
+        var response = await SendRequestAsync(
+            httpMethod,
             path,
             body,
+            requireAuth,
             headers);
 
         ValidateResponse(response);
 
-        return await response.Content.ReadFromJsonAsync<TResponse>();
+        return response.Content.Headers.ContentLength > 0 ? await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+        }) : Activator.CreateInstance<TResponse>();
     }
 
     private async Task<HttpResponseMessage> SendRequestAsync(
         HttpMethod httpMethod,
         string path,
         object requestBody,
-        IDictionary<string, string>? headers)
+        bool requireAuth,
+        Dictionary<string, string>? headers)
     {
-        string accessToken = _httpClient.DefaultRequestHeaders.Authorization.Parameter;
+        string? accessToken = _httpClient.DefaultRequestHeaders.Authorization?.Parameter;
 
-        if (IsValidAccessToken(accessToken))
+        if (requireAuth && !IsValidAccessToken(accessToken))
         {
             await ResetAccessTokenAsync();
         }
 
+        return await SendAsync(httpMethod, path, requestBody, headers);
+    }
+
+    private Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, string path, object requestBody, Dictionary<string, string>? headers)
+    {
         string json = JsonSerializer.Serialize(requestBody);
         HttpContent httpContent = new StringContent(json, Encoding.UTF8, ContentType);
 
@@ -111,24 +113,35 @@ public class ApiClient : IApiClient
         }
 
         _logger.LogInformation("{HttpMethod}: {Path} \n\tBody: {json}", httpMethod, path, json);
-        return await _httpClient.SendAsync(httpRequest);
+        return _httpClient.SendAsync(httpRequest);
     }
-
+    
     private async Task ResetAccessTokenAsync()
     {
         _logger.LogInformation("Resetting access_token...");
-        var response = await PostAsync("/auth", _credentials, new { access_token = "" });
+        var responseMessage = await SendAsync(HttpMethod.Post, "auth", new { apiSecret = _credentials.ApiSecret }, new Dictionary<string, string>
+        {
+            { "x-realm", _credentials.Realm }
+        });
 
+        var response  = await responseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>();
+        
         _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", response.access_token);
+            new AuthenticationHeaderValue("Bearer", response.AccessToken);
     }
 
+    private void SetRealmHeader()
+    {
+        _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-realm", _credentials.Realm);
+    }
+    
     private bool IsValidAccessToken(string accessToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
         {
             return false;
         }
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(accessToken);
         var expires = jwtToken.ValidTo;
@@ -139,5 +152,11 @@ public class ApiClient : IApiClient
     private void ValidateResponse(HttpResponseMessage httpResponse)
     {
         httpResponse.EnsureSuccessStatusCode();
+    }
+    
+    private class AuthenticationResponse
+    {
+        [JsonPropertyName("access_token")]
+        public string AccessToken { get; set; }
     }
 }

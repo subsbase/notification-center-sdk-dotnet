@@ -11,18 +11,13 @@ public class SubjectsClient : BaseClient, ISubjectsClient
     {
         return ApiClient.GetAsync<IEnumerable<Subject>>(Path);
     }
-
-    public Task<Subject> GetSubjectByIdAsync(string subjectId)
-    {
-        return ApiClient.GetAsync<Subject>($"{Path}/{subjectId}");
-    }
     
-    public Task<CreateSubjectResult> CreateSubjectAsync(Subject subject)
+    public Task<CreateSubjectResult> CreateSubjectAsync(CreateSubjectRequest subject)
     {
         return ApiClient.PostAsync<CreateSubjectResult>(Path, subject);
     }
 
-    public Task<UpdateSubjectResult> UpdateSubjectAsync(Subject subject)
+    public Task<UpdateSubjectResult> UpdateSubjectAsync(UpdateSubjectRequest subject)
     {
         return ApiClient.PutAsync<UpdateSubjectResult>(Path, subject);
     }

@@ -11,14 +11,4 @@ public class SubscribersClient : BaseClient, ISubscribersClient
     {
         return ApiClient.PostAsync<CreateSubscriberResult>(Path, subscriber);
     }
-
-    public Task<IEnumerable<Notification>> GetSubscriberNotificationAsync(string subscriberId, int pageIndex, int pageLimit)
-    {
-        return ApiClient.GetAsync<IEnumerable<Notification>>($"{Path}/{subscriberId}/notifications");
-    }
-
-    public Task MarkNotificationsAsReadAsync(string subscriberId, IEnumerable<string> notificationsIds)
-    {
-        return ApiClient.PatchAsync<object>($"{Path}/{subscriberId}/marksomeasread", notificationsIds);
-    }
 }

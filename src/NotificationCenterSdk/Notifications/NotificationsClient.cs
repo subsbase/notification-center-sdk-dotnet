@@ -7,8 +7,8 @@ public class NotificationsClient : BaseClient, INotificationsClient
     {
     }
 
-    public Task TriggerAsync(string topicEvent, TriggerNotificationRequest request)
+    public Task TriggerAsync(string subjectId, string topicId, TriggerNotificationRequest request)
     {
-        return ApiClient.PostAsync<object>($"{Path}/trigger/{topicEvent}", request);
+        return ApiClient.PostAsync<object>($"{Path}/trigger/{subjectId}/{topicId}", request);
     }
 }

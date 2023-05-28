@@ -4,7 +4,7 @@ namespace NotificationCenterSdk.Subscribers;
 
 public class Notification
 {
-    [JsonPropertyName("_id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
     [JsonPropertyName("topic")]

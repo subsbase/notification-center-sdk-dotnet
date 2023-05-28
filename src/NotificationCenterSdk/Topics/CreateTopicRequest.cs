@@ -2,7 +2,7 @@
 
 namespace NotificationCenterSdk.Topics;
 
-public class Topic
+public class CreateTopicRequest
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }

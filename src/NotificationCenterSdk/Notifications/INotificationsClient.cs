@@ -2,5 +2,5 @@
 
 public interface INotificationsClient
 {
-    Task TriggerAsync(string topicEvent, TriggerNotificationRequest request);
+    Task TriggerAsync(string subjectId, string topicId, TriggerNotificationRequest request);
 }
