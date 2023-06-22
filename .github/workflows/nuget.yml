@@ -8,7 +8,7 @@ on:
 
 env:
   PROJECT_PATH: "src/NotificationCenterSdk/NotificationCenterSdk.csproj"
-  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
+  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
   
 jobs:
@@ -36,9 +36,13 @@ jobs:
         with:
           proj-path: ${{ env.PROJECT_PATH }}
 
+      - name: 'Get package name'
+        id: get-package-name
+        run: echo "::set-output name=package-name::NotificationCenterSdk.${{ steps.get-version.outputs.version }}" 
+
       - name: 'Pack project'
         run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.get-version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: 'Push package'
-        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/${{ steps.get-package-name.outputs.package-name }}.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
     
