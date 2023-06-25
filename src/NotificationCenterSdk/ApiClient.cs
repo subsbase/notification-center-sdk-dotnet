@@ -146,7 +146,7 @@ public class ApiClient : IApiClient
         var jwtToken = tokenHandler.ReadJwtToken(accessToken);
         var expires = jwtToken.ValidTo;
 
-        return expires > DateTime.UtcNow;
+        return expires < DateTime.UtcNow;
     }
 
     private void ValidateResponse(HttpResponseMessage httpResponse)
