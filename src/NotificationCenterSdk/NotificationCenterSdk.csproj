@@ -5,7 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
+        <PackageId>SubsBaseNotificationCenter</PackageId>
+        <Authors>SubsBase</Authors>
     </PropertyGroup>
 
     <ItemGroup>

@@ -38,7 +38,7 @@ jobs:
 
       - name: 'Get package name'
         id: get-package-name
-        run: echo "::set-output name=package-name::NotificationCenterSdk.${{ steps.get-version.outputs.version }}" 
+        run: echo "::set-output name=package-name::SubsBaseNotificationCenter.${{ steps.get-version.outputs.version }}" 
 
       - name: 'Pack project'
         run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.get-version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
