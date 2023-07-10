@@ -6,8 +6,6 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <Version>1.0.3</Version>
-        <Title>Notification Center SDK</Title>
-        <Authors>SubsBase</Authors>
     </PropertyGroup>
 
     <ItemGroup>
