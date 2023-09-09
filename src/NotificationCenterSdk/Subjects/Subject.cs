@@ -3,23 +3,15 @@ using System.Text.Json.Serialization;
 
 namespace NotificationCenterSdk.Subjects;
 
-public class Subject
+public class Subject: BaseRequest
 {
-    [JsonPropertyName("id")]
-    public string Id { get; set; }
-
+ 
     [JsonPropertyName("name")]
     public string Name { get; set; }
     
-    [JsonPropertyName("realm")]
-    public string Realm { get; set; }
-    
+   
     [JsonPropertyName("topics")]
     public Dictionary<string, Topic> Topics = new();
     
-    [JsonPropertyName("createdAt")]
-    public DateTime CreatedAt { get; set; }
-    
-    [JsonPropertyName("updatedAt")]
-    public DateTime UpdatedAt { get; set; }
+   
 }
