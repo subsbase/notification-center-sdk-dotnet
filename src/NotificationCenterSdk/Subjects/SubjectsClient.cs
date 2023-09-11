@@ -13,13 +13,13 @@ public class SubjectsClient : BaseClient, ISubjectsClient
     }
     
     
-    public Task<CreateSubjectResult> CreateSubjectAsync(Subject subject)
+    public Task<CreateSubjectResponse> CreateSubjectAsync(Subject subject)
     {
-        return ApiClient.PostAsync<CreateSubjectResult>(Path, subject);
+        return ApiClient.PostAsync<CreateSubjectResponse>(Path, subject);
     }
 
-    public Task<UpdateSubjectResult> UpdateSubjectAsync(Subject subject)
+    public Task<UpdateSubjectResponse> UpdateSubjectAsync(Subject subject)
     {
-        return ApiClient.PutAsync<UpdateSubjectResult>(Path, subject);
+        return ApiClient.PutAsync<UpdateSubjectResponse>(Path, subject);
     }
 }
