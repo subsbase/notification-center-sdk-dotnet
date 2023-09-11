@@ -11,4 +11,6 @@ public class NotificationsClient : BaseClient, INotificationsClient
     {
         return ApiClient.PostAsync<object>($"{Path}/trigger/{subjectId}/{topicId}", request);
     }
+    
+    
 }
