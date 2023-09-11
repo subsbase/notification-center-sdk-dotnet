@@ -4,14 +4,14 @@ namespace NotificationCenterSdk.Subscribers;
 
 public class Notification
 {
-    [JsonPropertyName("id")]
+    [JsonPropertyName("_id")]
     public string Id { get; set; }
 
-    [JsonPropertyName("topic")]
+    [JsonPropertyName("topicId")]
     public string TopicId { get; set; }
     
-    [JsonPropertyName("content")]
-    public string Content { get; set; }
+    [JsonPropertyName("subject")]
+    public string subject { get; set; }
     
     [JsonPropertyName("actionUrl")]
     public string ActionUrl { get; set; }
@@ -24,4 +24,16 @@ public class Notification
     
     [JsonPropertyName("updatedAt")]
     public DateTime UpdatedAt { get; set; }
+    
+    [JsonPropertyName("title")]
+    public string title { get; set; }
+
+    [JsonPropertyName("message")]
+    public string message { get; set; }
+
+    
+    
+    
+    
+  
 }
