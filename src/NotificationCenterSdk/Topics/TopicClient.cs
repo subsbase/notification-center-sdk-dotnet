@@ -9,20 +9,20 @@ public class TopicClient : BaseClient, ITopicsClient
     {
     }
 
-    public Task<CreateTopicResult> CreateTopicAsync( CreateTopicRequest topic)
+    public Task<CreateTopicResponse> CreateTopicAsync( CreateTopicRequest topic)
     {
-        return ApiClient.PostAsync<CreateTopicResult>($"{Path}/{topic.SubjectId}", topic);
+        return ApiClient.PostAsync<CreateTopicResponse>($"{Path}/{topic.SubjectId}", topic);
     }
 
-    public Task<UpdateTopicResult> UpdateTopicAsync( UpdateTopicRequest topic)
+    public Task<UpdateTopicResponse> UpdateTopicAsync( UpdateTopicRequest topic)
     {
-        return ApiClient.PutAsync<UpdateTopicResult>($"{Path}/{topic.SubjectId}/{topic.TopicId}", topic.Topic);
+        return ApiClient.PutAsync<UpdateTopicResponse>($"{Path}/{topic.SubjectId}/{topic.TopicId}", topic.Topic);
     }
    
 
-    public Task<CreateNotificationTemplateResult> SetNotificationTemplateAsync(CreateNotificationTemplateRequest request)
+    public Task<CreateNotificationTemplateResponse> SetNotificationTemplateAsync(CreateNotificationTemplateRequest request)
     {
-        return ApiClient.PostAsync<CreateNotificationTemplateResult>($"{Path}/{request.SubjectId}/{request.TopicId}", request.Template);
+        return ApiClient.PostAsync<CreateNotificationTemplateResponse>($"{Path}/{request.SubjectId}/{request.TopicId}", request.Template);
     }
     
     public Task<Topic>  GetByIdAsync(string subjectId, string topicId) 

@@ -2,9 +2,10 @@
 
 public interface ITopicsClient
 {
-    Task<CreateTopicResult> CreateTopicAsync( CreateTopicRequest topic);
+    Task<CreateTopicResponse> CreateTopicAsync( CreateTopicRequest topic);
 
-    Task<UpdateTopicResult> UpdateTopicAsync(UpdateTopicRequest topic);
+    Task<UpdateTopicResponse> UpdateTopicAsync(UpdateTopicRequest topic);
 
-    Task<CreateNotificationTemplateResult> SetNotificationTemplateAsync( CreateNotificationTemplateRequest request);
+    Task<CreateNotificationTemplateResponse> SetNotificationTemplateAsync( CreateNotificationTemplateRequest request);
+    Task<Topic> GetByIdAsync(string subjectId, string topicId);
 }
