@@ -53,7 +53,10 @@ public class NotificationCenterSdkBuilder
 
     private ILogger<ApiClient> GetLogger()
     {
-        ILoggerFactory loggerFactory = new LoggerFactory();
+        ILoggerFactory loggerFactory =  LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
+        });
         return loggerFactory.CreateLogger<ApiClient>();
     }
 }
