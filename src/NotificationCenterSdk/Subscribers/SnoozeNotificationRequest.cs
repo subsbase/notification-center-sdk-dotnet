@@ -6,7 +6,7 @@ namespace NotificationCenterSdk.Subscribers;
 public class SnoozeNotificationRequest
 {
     public string SubscriberId { get; set; }
-    public SnoozeNotificationRequestBody RequestedData { get; set; } 
+    public SnoozeNotificationRequestBody RequestData { get; set; } 
 
 
     public class SnoozeNotificationRequestBody
