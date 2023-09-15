@@ -72,7 +72,7 @@ public Task<ArchiveNotificationResponse> UnarchiveNotificationAsync(ArchiveNotif
     }
     public Task<SnoozeNotificationResponse> SnoozeNotificationsAsync(SnoozeNotificationRequest snoozeNotificationRequest)
     {
-        return ApiClient.PostAsync<SnoozeNotificationResponse>($"{Path}/{snoozeNotificationRequest.SubscriberId}/notifications/snooze", snoozeNotificationRequest.RequestedData, false);
+        return ApiClient.PostAsync<SnoozeNotificationResponse>($"{Path}/{snoozeNotificationRequest.SubscriberId}/notifications/snooze", snoozeNotificationRequest.RequestData, false);
     }
     
         
