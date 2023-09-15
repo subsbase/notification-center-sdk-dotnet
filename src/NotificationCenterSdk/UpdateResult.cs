@@ -5,7 +5,7 @@ namespace NotificationCenterSdk;
 public class UpdateResult
 {
     [JsonPropertyName("matchedCount")]
-    public int MatchedCount { get; set; }
+    public int MatchedCount { get; set;   }
     
     [JsonPropertyName("modifiedCount")]
     public int ModifiedCount { get; set; }

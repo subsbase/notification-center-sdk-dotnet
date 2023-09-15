@@ -57,13 +57,21 @@ public class ApiClient : IApiClient
 
     public Task<TResponse> PutAsync<TResponse>(string path, object body, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        return ProcessRequestAsync<TResponse>(HttpMethod.Put, path, body, requireAuth, headers);
+        return ProcessRequestAsync<TResponse>(HttpMethod.Put,
+            path,
+            body,
+            requireAuth,
+            headers);
     }
 
 
     public Task<TResponse> PatchAsync<TResponse>(string path, object body, bool requireAuth = true, Dictionary<string, string>? headers = null)
     {
-        return ProcessRequestAsync<TResponse>(HttpMethod.Patch, path, body, requireAuth, headers);
+        return ProcessRequestAsync<TResponse>(HttpMethod.Patch,
+            path,
+            body,
+            requireAuth,
+            headers);
     }
 
     private async Task<TResponse> ProcessRequestAsync<TResponse>(HttpMethod httpMethod, string path, object body, bool requireAuth, Dictionary<string, string>? headers)
@@ -75,7 +83,7 @@ public class ApiClient : IApiClient
             requireAuth,
             headers);
 
-        ValidateResponse(response);
+        await ValidateResponseAsync(response);
 
         return response.Content.Headers.ContentLength > 0 ? await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions()
         {
@@ -115,7 +123,7 @@ public class ApiClient : IApiClient
         _logger.LogInformation("{HttpMethod}: {Path} \n\tBody: {json}", httpMethod, path, json);
         return _httpClient.SendAsync(httpRequest);
     }
-    
+
     private async Task ResetAccessTokenAsync()
     {
         _logger.LogInformation("Resetting access_token...");
@@ -124,8 +132,8 @@ public class ApiClient : IApiClient
             { "x-realm", _credentials.Realm }
         });
 
-        var response  = await responseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>();
-        
+        var response = await responseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>();
+
         _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", response.AccessToken);
     }
@@ -134,7 +142,7 @@ public class ApiClient : IApiClient
     {
         _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-realm", _credentials.Realm);
     }
-    
+
     private bool IsValidAccessToken(string accessToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
@@ -149,11 +157,15 @@ public class ApiClient : IApiClient
         return expires > DateTime.UtcNow;
     }
 
-    private void ValidateResponse(HttpResponseMessage httpResponse)
+    private async Task ValidateResponseAsync(HttpResponseMessage httpResponse)
     {
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            _logger.LogError(await httpResponse.Content.ReadAsStringAsync());
+        }
         httpResponse.EnsureSuccessStatusCode();
     }
-    
+
     private class AuthenticationResponse
     {
         [JsonPropertyName("access_token")]

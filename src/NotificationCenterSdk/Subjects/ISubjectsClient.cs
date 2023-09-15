@@ -2,7 +2,7 @@
 
 public interface ISubjectsClient
 {
-    Task<IEnumerable<Subject>> ListSubjectsAsync(int pageIndex, int pageLimit);
-    Task<CreateSubjectResult> CreateSubjectAsync(CreateSubjectRequest subject);
-    Task<UpdateSubjectResult> UpdateSubjectAsync(UpdateSubjectRequest subject);
+    Task<IEnumerable<Subject>> ListSubjectsAsync(ListSubjectsRequest request);
+    Task<CreateSubjectResponse> CreateSubjectAsync(Subject subject);
+    Task<UpdateSubjectResponse> UpdateSubjectAsync(Subject subject);
 }

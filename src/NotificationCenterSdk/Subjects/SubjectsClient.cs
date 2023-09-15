@@ -7,18 +7,19 @@ public class SubjectsClient : BaseClient, ISubjectsClient
     {
     }
 
-    public Task<IEnumerable<Subject>> ListSubjectsAsync(int pageIndex, int pageLimit)
+    public Task<IEnumerable<Subject>> ListSubjectsAsync(ListSubjectsRequest request)
     {
-        return ApiClient.GetAsync<IEnumerable<Subject>>(Path);
+        return ApiClient.GetAsync<IEnumerable<Subject>>(Path + $"?pageNum={request.PageNumber}&pageSize={request.PageSize}");
     }
     
-    public Task<CreateSubjectResult> CreateSubjectAsync(CreateSubjectRequest subject)
+    
+    public Task<CreateSubjectResponse> CreateSubjectAsync(Subject subject)
     {
-        return ApiClient.PostAsync<CreateSubjectResult>(Path, subject);
+        return ApiClient.PostAsync<CreateSubjectResponse>(Path, subject);
     }
 
-    public Task<UpdateSubjectResult> UpdateSubjectAsync(UpdateSubjectRequest subject)
+    public Task<UpdateSubjectResponse> UpdateSubjectAsync(Subject subject)
     {
-        return ApiClient.PutAsync<UpdateSubjectResult>(Path, subject);
+        return ApiClient.PutAsync<UpdateSubjectResponse>(Path, subject);
     }
 }

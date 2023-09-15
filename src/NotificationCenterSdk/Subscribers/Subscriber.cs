@@ -19,9 +19,9 @@ public class Subscriber
     [JsonPropertyName("archivedNotifications")]
     public IEnumerable<ArchivedNotification>  ArchivedNotifications { get; set; }
 
-    [JsonPropertyName("createdAt")]
+    [JsonPropertyName("createdAt")] 
     public DateTime CreatedAt { get; set; }
     
-    [JsonPropertyName("updatedAt")]
+    [JsonPropertyName("updatedAt")] 
     public DateTime UpdatedAt { get; set; }
 }
