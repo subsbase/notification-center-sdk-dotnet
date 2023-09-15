@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NotificationCenterSdk.Subscribers;
 
-public class SnoozeResponse
+public class SnoozeNotificationResponse
 {
     [JsonPropertyName("success")]
     public bool Success { get; set; }

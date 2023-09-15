@@ -161,10 +161,7 @@ public class ApiClient : IApiClient
     {
         if (!httpResponse.IsSuccessStatusCode)
         {
-            // var defaultColor = Console.ForegroundColor;
-            // Console.ForegroundColor = ConsoleColor.Red;
             _logger.LogError(await httpResponse.Content.ReadAsStringAsync());
-            // Console.ForegroundColor = defaultColor;
         }
         httpResponse.EnsureSuccessStatusCode();
     }

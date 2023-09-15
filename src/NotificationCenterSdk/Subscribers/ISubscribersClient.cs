@@ -3,16 +3,16 @@
 public interface ISubscribersClient
 {
     Task<CreateSubscriberResponse> CreateSubscriberAsync(CreateSubscriberRequest request);
-    Task<SnoozeResponse> SnoozeNotificationsAsync(SnoozeRequest snoozeRequest);
+    Task<SnoozeNotificationResponse> SnoozeNotificationsAsync(SnoozeNotificationRequest snoozeRequest);
     Task<ListNotificationsResponse> ListNotificationsAsync(ListNotificationsRequest listNotificationsRequest);
     Task<CountUnreadResponse> CountUnreadNotificationsAsync(string subscriberId);
-    Task<ListNotificationsResponse> listArchivedNotificationsAsync(ListNotificationsRequest listNotificationsRequest);
-    Task markAsReadAsync(MarkNotificationRequest markNotificationRequest);
-    Task markAsUnreadAsync(MarkNotificationRequest markNotificationRequest);
-    Task markAllAsReadAsync(string subscriberId);
-    Task markAllAsUnreadAsync(string subscriberId);
-    Task markManyAsReadAsync(MarkManyRequest markManyRequest);
-    Task markManyAsUnreadAsync(MarkManyRequest markManyRequest);
+    Task<ListNotificationsResponse> ListArchivedNotificationsAsync(ListNotificationsRequest listNotificationsRequest);
+    Task MarkAsReadAsync(MarkNotificationRequest markNotificationRequest);
+    Task MarkAsUnreadAsync(MarkNotificationRequest markNotificationRequest);
+    Task MarkAllAsReadAsync(string subscriberId);
+    Task MarkAllAsUnreadAsync(string subscriberId);
+    Task MarkManyAsReadAsync(MarkManyRequest markManyRequest);
+    Task MarkManyAsUnreadAsync(MarkManyRequest markManyRequest);
     
      Task<ArchiveNotificationResponse> ArchiveNotificationAsync(ArchiveNotificationRequest archiveNotificationRequest);
      Task<ArchiveNotificationResponse> UnarchiveNotificationAsync(ArchiveNotificationRequest unarchiveNotificationRequest);

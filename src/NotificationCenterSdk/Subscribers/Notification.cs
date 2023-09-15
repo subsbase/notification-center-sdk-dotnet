@@ -11,7 +11,7 @@ public class Notification
     public string TopicId { get; set; }
     
     [JsonPropertyName("subject")]
-    public string subject { get; set; }
+    public string Subject { get; set; }
     
     [JsonPropertyName("actionUrl")]
     public string ActionUrl { get; set; }
@@ -26,14 +26,8 @@ public class Notification
     public DateTime UpdatedAt { get; set; }
     
     [JsonPropertyName("title")]
-    public string title { get; set; }
+    public string Title { get; set; }
 
     [JsonPropertyName("message")]
-    public string message { get; set; }
-
-    
-    
-    
-    
-  
+    public string Message { get; set; }
 }

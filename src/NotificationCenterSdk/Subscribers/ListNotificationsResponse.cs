@@ -9,7 +9,4 @@ public class ListNotificationsResponse
     
     [JsonPropertyName("totalCount")]
     public int TotalCount { get; set; }
-    
-    
-    
 }

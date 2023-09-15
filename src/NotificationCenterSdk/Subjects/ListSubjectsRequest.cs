@@ -5,9 +5,9 @@ namespace NotificationCenterSdk.Subjects;
 
 public class ListSubjectsRequest
 {
-    [JsonPropertyNameAttribute("pageNum")]
+    [JsonPropertyNameAttribute("pageNum")] 
     public int PageNumber { get; set; }
+    
     [JsonPropertyNameAttribute("pageSize")]
-
     public int PageSize { get; set; }
 }

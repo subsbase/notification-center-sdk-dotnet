@@ -3,13 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace NotificationCenterSdk.Subscribers;
 
-public class SnoozeRequest
+public class SnoozeNotificationRequest
 {
     public string SubscriberId { get; set; }
-    public SnoozeRequestBody Body { get; set; } 
+    public SnoozeNotificationRequestBody RequestedData { get; set; } 
 
 
-    public class SnoozeRequestBody
+    public class SnoozeNotificationRequestBody
     {
         [JsonPropertyName("notificationsIds")]
         public List<string> NotificationsIds { get; set; }
